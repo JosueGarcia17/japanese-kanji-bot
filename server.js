@@ -11,19 +11,21 @@ client.once('ready', () => {
 client.login(token);
 
 
-client.on('message', message => {
+client.on('message', message => {   
 	if (message.content.startsWith(`${prefix}kanji`)) {
         const args = message.content.slice(prefix.length + 5).trim().split(' ');
         const command = args.shift().toLowerCase();
-        console.log(command);
 
         jisho.searchForKanji(command).then(result => {
             if(result.found) {
-                console.log('Meaning: ' + result.meaning);
-                console.log('How to write it: ' + result.strokeOrderGifUri);
+                
                 return message.channel.send(
                     'Meaning: ' + '[' + result.meaning +']'  +
+                    '\nJLPT level: ' + result.jlptLevel +
+                    '\nKunyomi readings: ' + JSON.stringify(result.kunyomi) +
+                    '\nOnyomi readings: ' + JSON.stringify(result.onyomi) +
                     '\nHow to write it: ' + result.strokeOrderGifUri
+                    
 
                     );
 
