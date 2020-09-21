@@ -11,7 +11,7 @@ async function kanjiSearch(kanji) {
         if(result.found) {
             kanjiFound = true;
 
-            kanjiInformation = 'Meaning: ' + result.meaning + '\nJLPT level: ' + result.jlptLevel
+            kanjiInformation = 'Meaning: [' + result.meaning + '] ' + '\nJLPT level: ' + result.jlptLevel
             + '\nKunyomi readings: ' + JSON.stringify(result.kunyomi) + '\nOnyomi readings: ' +
             JSON.stringify(result.onyomi) + '\nHow to write it: ' + result.strokeOrderGifUri;
 
@@ -29,4 +29,24 @@ async function kanjiSearch(kanji) {
     return kanjiResult;
 }
 
-module.exports = kanjiSearch;
+async function exampleSearch(kanji) {
+    let test = '';
+    await jisho.searchForExamples(kanji).then(result => {
+        
+        if(result.found) {
+            test = 'Jisho Uri: ' + result.uri + '\n';
+
+        for (let i = 0; i < 3; ++i) {
+            let example = result.results[i];
+            test += '\nWith kanji: ' + example.kanji + '\nKana only: ' + example.kana + '\nIn English: ' + example.english
+            + '\n';
+              
+          }
+
+        }
+        
+      });
+      return test;
+}
+
+module.exports = {kanjiSearch, exampleSearch};

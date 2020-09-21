@@ -4,7 +4,7 @@ const { prefix, token} = require('./config.json');
 const JishoApi = require('unofficial-jisho-api');
 const jisho = new JishoApi();
 const kanjiInformation = require('./command.js');
-const kanjiSearch = require('./command.js');
+const commandFunctions = require('./command.js');
 
 client.once('ready', () => {
 	console.log('Bot started successfully');
@@ -20,11 +20,24 @@ client.on("message", async function(message) {
         }
         const args = message.content.slice(prefix.length + 5).trim().split(' ');
         const command = args.shift().toLowerCase();
-        console.log(command);
 
-        let returning = await kanjiSearch(command);
+        let returning = await commandFunctions.kanjiSearch(command);
         message.channel.send(returning);    
     }
+
+    if (message.content.startsWith(`${prefix}examples`)) {
+        if(message.author.bot) {
+            return;
+        }
+        const args = message.content.slice(prefix.length + 8).trim().split(' ');
+        const command = args.shift().toLowerCase();
+        console.log(command);
+
+        let returning = await commandFunctions.exampleSearch(command);
+        message.channel.send(returning);    
+    }
+
+
 });
 
 
